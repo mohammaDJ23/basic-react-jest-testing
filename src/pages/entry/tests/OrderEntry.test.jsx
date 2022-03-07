@@ -44,3 +44,21 @@ test('handles error for scoops and toppings routes', async function () {
     expect(alerts).toHaveLength(2);
   });
 });
+
+test('Order sundae should be disable if there is no order', async function () {
+  render(<OrderEntry setOrderPhase={jest.fn()} />);
+
+  const scoopsTotal = screen.getByText('Scoops total:', { exact: false });
+
+  expect(scoopsTotal).toHaveTextContent('0.00');
+
+  const toppingsTotal = screen.getByText('Toppings total:', { exact: false });
+
+  expect(toppingsTotal).toHaveTextContent('0.00');
+
+  const orderSundae = screen.getByRole('button', { name: 'Order Sundae!' });
+
+  expect(orderSundae).toBeDisabled();
+
+  await screen.findAllByRole('spinbutton');
+});
